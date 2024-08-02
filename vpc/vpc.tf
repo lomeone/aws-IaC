@@ -9,3 +9,22 @@ locals {
         "private" = [for i in [30, 40] : cidrsubnet(var.cidr, 8, 1)]
     }
 }
+
+resource "aws_vpc" "lomeone-vpc" {
+  cidr_block = var.cidr
+
+  enable_dns_hostnames = true
+  enable_dns_support = true
+
+  tags = {
+    Name = "${var.name}-vpc"
+  }
+}
+
+resource "aws_subnet" "public" {
+  vpc_id = aws_vpc.lomeone-vpc.id
+  for_each = toset(local.subnet.public)
+
+  cidr_block = each.value
+  availability_zone = local.az[index(local.subnet.public, each.value)]
+}

@@ -6,24 +6,15 @@ terraform {
     }
   }
 
-  required_version = ">= 1.2.0"
+  required_version = ">= 1.9.2"
 }
 
 provider "aws" {
   region  = "ap-northeast-2"
 }
 
-resource "aws_instance" "app_server" {
-  ami           = "ami-830c94e3"
-  instance_type = "t2.micro"
-
-  tags = {
-    Name = "ExampleAppServerInstance"
-  }
-}
-
 module vpc {
     source = "./modules/vpc"
-    name = "lomeone-vpc"
+    name = "lomeone"
     cidr = "10.0.0.0/16"
 }
