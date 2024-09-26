@@ -10,7 +10,7 @@ terraform {
 }
 
 provider "aws" {
-  region  = "ap-northeast-2"
+  region = "ap-northeast-2"
 
   default_tags {
     tags = {
@@ -19,8 +19,8 @@ provider "aws" {
   }
 }
 
-module vpc {
-    source = "./modules/vpc"
-    name = "lomeone"
-    cidr = "10.0.0.0/16"
+module "vpc" {
+  source = "./modules/vpc"
+  name   = "lomeone"
+  cidr   = "10.0.0.0/16"
 }
