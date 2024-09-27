@@ -1,10 +1,16 @@
 resource "aws_msk_cluster" "main" {
-  cluster_name = var.name.msk
-  kafka_version = var.kafka_version
+  cluster_name           = var.name.msk
+  kafka_version          = var.kafka_version
   number_of_broker_nodes = var.broker_count
 
+  client_authentication {
+    sasl {
+      iam = true
+    }
+  }
+
   broker_node_group_info {
-    instance_type = var.broker_size
+    instance_type  = var.broker_size
     client_subnets = var.subnet_ids
 
     storage_info {
