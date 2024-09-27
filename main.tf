@@ -27,12 +27,12 @@ module "vpc" {
     eks_control_plane_subnet      = "eks-private"
     private_subnet                = "private"
     db_private_subnet             = "db-private"
-    internet_gateway              = "igw"
-    public_nat_gateway            = "nat-public-gw"
-    public_route_table            = "public-rtb"
     eks_control_plane_route_table = "eks-control-plane-rtb"
+    public_route_table            = "public-rtb"
     private_route_table           = "private-rtb"
     db_route_table                = "db-rtb"
+    internet_gateway              = "igw"
+    public_nat_gateway            = "nat-public-gw"
   }
   cidr                    = "10.0.0.0/16"
   availability_zone_count = 3

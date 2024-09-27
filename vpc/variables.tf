@@ -1,14 +1,16 @@
 variable "name" {
   type = object({
-    vpc                      = string
-    public_subnet            = string
-    eks_control_plane_subnet = string
-    private_subnet           = string
-    db_private_subnet        = string
-    public_route_table       = string
-    private_route_table      = string
-    internet_gateway         = string
-    public_nat_gateway       = string
+    vpc                           = string
+    public_subnet                 = string
+    eks_control_plane_subnet      = string
+    private_subnet                = string
+    db_private_subnet             = string
+    eks_control_plane_route_table = string
+    public_route_table            = string
+    private_route_table           = string
+    db_route_table                = string
+    internet_gateway              = string
+    public_nat_gateway            = string
   })
   default = {
     vpc                           = "default"
@@ -16,12 +18,12 @@ variable "name" {
     eks_control_plane_subnet      = "eks-private"
     private_subnet                = "private"
     db_private_subnet             = "db-private"
-    internet_gateway              = "igw"
-    public_nat_gateway            = "nat-public-gw"
-    public_route_table            = "public-rtb"
     eks_control_plane_route_table = "eks-control-plane-rtb"
+    public_route_table            = "public-rtb"
     private_route_table           = "private-rtb"
     db_route_table                = "db-rtb"
+    internet_gateway              = "igw"
+    public_nat_gateway            = "nat-public-gw"
   }
   description = "resource names"
 }

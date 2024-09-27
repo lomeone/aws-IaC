@@ -7,8 +7,7 @@ resource "aws_internet_gateway" "igw" {
 }
 
 resource "aws_eip" "nat_gateway_eip" {
-  domain = "vpc"
-  count  = length(var.subnet_cidr.public)
+  count = length(var.subnet_cidr.public)
 
   lifecycle {
     create_before_destroy = true
