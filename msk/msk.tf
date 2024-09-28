@@ -19,6 +19,6 @@ resource "aws_msk_cluster" "main" {
       }
     }
 
-    security_groups = [aws_security_group.msk_security_group.id]
+    security_groups = [aws_security_group.msk_broker.id]
   }
 }
