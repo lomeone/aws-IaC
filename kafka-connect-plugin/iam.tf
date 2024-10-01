@@ -12,7 +12,7 @@ resource "aws_iam_role" "storagegateway_bucket_access" {
           "s3:ListBucketVersions",
           "s3:ListBucketMultipartUploads"
         ],
-        "Resource" : "arn:aws:s3:::test-oy-global",
+        "Resource" : "${aws_s3_bucket.kafka_connect_pulgin.arn}",
         "Effect" : "Allow"
       },
       {
