@@ -43,3 +43,28 @@ module "vpc" {
     db_private        = ["10.0.244.0/22", "10.0.248.0/22", "10.0.252.0/22"]
   }
 }
+
+module "msk" {
+  source = "./msk"
+
+  name = {
+    msk            = "lomeone-msk"
+    security_group = "lomeone-msk-sg"
+  }
+
+  vpc        = module.vpc.vpc_id
+  subnet_ids = module.vpc.subnet_ids.private_subnets
+}
+
+module "kafka-connect-plugin" {
+  source = "./kafka-connect-plugin"
+
+  name = {
+    s3       = "kafka-connect-plugin-storage"
+    gateway  = "kafka-connect-plugin-storage-gateway"
+    iam_role = "KafkaConnectPluginStorageGatewayBucketAccessRole"
+  }
+
+  subnet_id = module.vpc.subnet_ids.public_subnets[0]
+  vpc_id    = module.vpc.vpc_id
+}
