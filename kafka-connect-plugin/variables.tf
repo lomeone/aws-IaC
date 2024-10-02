@@ -38,3 +38,9 @@ variable "nfs_clients" {
   default     = ["0.0.0.0/0"]
   description = "nfs client list for access control"
 }
+
+variable "vpc_endpoint_subnet" {
+  type        = list(string)
+  default     = [""]
+  description = "storage gateway endpoint subnet id"
+}

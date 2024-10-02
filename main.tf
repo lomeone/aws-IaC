@@ -39,7 +39,7 @@ module "vpc" {
   subnet_cidr = {
     public            = ["10.0.0.0/27", "10.0.0.32/27", "10.0.0.64/27"]
     eks_control_plane = ["10.0.0.192/28", "10.0.0.208/28", "10.0.0.224/28"]
-    private           = ["10.0.1.0/20", "10.0.17.0/20", "10.0.33.0/20"]
+    private           = ["10.0.16.0/20", "10.0.32.0/20", "10.0.48.0/20"]
     db_private        = ["10.0.244.0/22", "10.0.248.0/22", "10.0.252.0/22"]
   }
 }
@@ -60,9 +60,11 @@ module "kafka-connect-plugin" {
   source = "./kafka-connect-plugin"
 
   name = {
-    s3       = "kafka-connect-plugin-storage"
-    gateway  = "kafka-connect-plugin-storage-gateway"
-    iam_role = "KafkaConnectPluginStorageGatewayBucketAccessRole"
+    s3               = "kafka-connect-plugin-storage"
+    gateway          = "kafka-connect-plugin-storage-gateway"
+    gateway_instance = "kafka-connect-plugin-storage-gateway"
+    iam_role         = "StorageGatewayBucketAccessRole"
+    security_group   = "kafka-plugin-storage-gateway-sg"
   }
 
   subnet_id = module.vpc.subnet_ids.public_subnets[0]
