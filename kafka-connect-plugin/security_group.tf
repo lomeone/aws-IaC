@@ -75,7 +75,6 @@ resource "aws_vpc_security_group_ingress_rule" "allow_smb_455" {
   ip_protocol       = "tcp"
 }
 
-
 resource "aws_vpc_security_group_ingress_rule" "allow_sgw_activation" {
   security_group_id = aws_security_group.s3_stroage_gateway.id
   cidr_ipv4         = "0.0.0.0/0"

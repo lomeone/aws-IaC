@@ -1,6 +1,6 @@
 resource "aws_security_group" "rds_mysql" {
   name   = "rds-mysql"
-  vpc_id = var.vpc.id
+  vpc_id = var.vpc
 }
 
 resource "aws_vpc_security_group_ingress_rule" "allow_mysql" {

@@ -22,7 +22,7 @@ provider "aws" {
 module "vpc" {
   source = "./vpc"
   name = {
-    vpc                           = "lomeone-vpc"
+    vpc                           = "hansu-vpc"
     public_subnet                 = "public"
     eks_control_plane_subnet      = "eks-private"
     private_subnet                = "private"
@@ -44,12 +44,23 @@ module "vpc" {
   }
 }
 
+module "rds" {
+  source = "./rds"
+
+  name = {
+    db_cluster = "hansu-aurora-rds"
+    db         = "hansu-db"
+  }
+
+  vpc = module.vpc.vpc_id
+}
+
 module "msk" {
   source = "./msk"
 
   name = {
-    msk            = "lomeone-msk"
-    security_group = "lomeone-msk-sg"
+    msk            = "hansu-msk"
+    security_group = "hansu-msk-sg"
   }
 
   vpc        = module.vpc.vpc_id

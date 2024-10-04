@@ -31,5 +31,5 @@ resource "aws_rds_cluster_instance" "reader" {
   db_subnet_group_name = "db_subnet_group"
   apply_immediately    = true
 
-  availability_zone = element(["ap-northeast-2a", "ap-northeast-2b", "ap-northeast-2c"])
+  availability_zone = element(["ap-northeast-2a", "ap-northeast-2b", "ap-northeast-2c"], count.index)
 }
