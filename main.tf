@@ -44,6 +44,16 @@ module "vpc" {
   }
 }
 
+module "eks" {
+  source = "./eks"
+
+  name = {
+    eks = "hansu-eks"
+  }
+
+  subnet_ids = module.vpc.subnet_ids.eks_control_plane
+}
+
 module "rds" {
   source = "./rds"
 
