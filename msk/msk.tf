@@ -1,7 +1,7 @@
 resource "aws_msk_cluster" "main" {
   cluster_name           = var.name.msk
-  kafka_version          = var.kafka_version
-  number_of_broker_nodes = var.broker_count
+  kafka_version          = var.kafka.version
+  number_of_broker_nodes = var.kafka.broker_count
 
   client_authentication {
     sasl {
@@ -10,15 +10,15 @@ resource "aws_msk_cluster" "main" {
   }
 
   broker_node_group_info {
-    instance_type  = var.broker_size
-    client_subnets = var.subnet_ids
+    instance_type  = var.kafka.broker_instance
+    client_subnets = var.vpc.subnet_ids
 
     storage_info {
       ebs_storage_info {
-        volume_size = var.volume_size
+        volume_size = var.kafka.volume_size
       }
     }
 
-    security_groups = [aws_security_group.msk_broker.id]
+    security_groups = var.vpc.security_groups
   }
 }

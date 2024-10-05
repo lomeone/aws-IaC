@@ -9,6 +9,6 @@ variable "name" {
 }
 
 variable "subnet_ids" {
-  type    = list(string)
-  default = []
+  type        = list(string)
+  description = "subnet ids"
 }

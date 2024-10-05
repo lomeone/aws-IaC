@@ -4,43 +4,34 @@ variable "name" {
     gateway          = string
     gateway_instance = string
     iam_role         = string
-    security_group   = string
   })
   default = {
     s3               = "default"
     gateway          = "default"
     gateway_instance = "default-storage-gateway-instance"
     iam_role         = "StorageGatewayBucketAccessRole"
-    security_group   = "default-storage-gateway-sg"
   }
+  description = "resource name"
 }
 
-variable "gateway_instance_type" {
-  type        = string
-  default     = "m5.xlarge"
-  description = "ec2 for gateway instance type"
+variable "vpc" {
+  type = object({
+    id                               = string
+    subnet_ids                       = list(string)
+    gateway_instance_subnet          = string
+    gateway_instance_security_groups = list(string)
+    gateway_endpoint_security_groups = list(string)
+  })
+  description = "vpc info"
 }
 
-variable "subnet_id" {
-  type        = string
-  default     = ""
-  description = "subnet id"
-}
-
-variable "vpc_id" {
-  type        = string
-  default     = ""
-  description = "vpc id"
-}
-
-variable "nfs_clients" {
-  type        = list(string)
-  default     = ["0.0.0.0/0"]
-  description = "nfs client list for access control"
-}
-
-variable "vpc_endpoint_subnet" {
-  type        = list(string)
-  default     = [""]
-  description = "storage gateway endpoint subnet id"
+variable "storage_gateway" {
+  type = object({
+    gateway_instance = string
+    nfs_clients      = list(string)
+  })
+  default = {
+    gateway_instance = "m5.xlarge"
+    nfs_clients      = ["0.0.0.0/0"]
+  }
 }

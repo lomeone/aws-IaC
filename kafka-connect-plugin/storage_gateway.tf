@@ -6,7 +6,7 @@ resource "aws_storagegateway_gateway" "kafka_connect_plugin" {
 }
 
 resource "aws_storagegateway_nfs_file_share" "nfs" {
-  client_list  = var.nfs_clients
+  client_list  = var.storage_gateway.nfs_clients
   gateway_arn  = aws_storagegateway_gateway.kafka_connect_plugin.arn
   location_arn = aws_s3_bucket.kafka_connect_plugin.arn
   role_arn     = aws_iam_role.storagegateway_bucket_access.arn
