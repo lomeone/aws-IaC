@@ -44,6 +44,15 @@ module "vpc" {
   }
 }
 
+module "security_group" {
+  source = "./security-group"
+
+  vpc = {
+    id   = module.vpc.vpc_id
+    name = module.vpc.vpc_name
+  }
+}
+
 module "eks" {
   source = "./eks"
 
@@ -62,7 +71,11 @@ module "rds" {
     db         = "hansu-db"
   }
 
-  vpc = module.vpc.vpc_id
+  vpc = {
+    db_subnet_ids   = module.vpc.subnet_ids.db_private_subnets
+    db_subnet_group = module.vpc.subnet_groups.db
+    security_groups = [module.security_group.sg_id.mysql]
+  }
 }
 
 module "msk" {
@@ -73,8 +86,10 @@ module "msk" {
     security_group = "hansu-msk-sg"
   }
 
-  vpc        = module.vpc.vpc_id
-  subnet_ids = module.vpc.subnet_ids.private_subnets
+  vpc = {
+    security_groups = [module.security_group.sg_id.msk]
+    subnet_ids      = module.vpc.subnet_ids.private_subnets
+  }
 }
 
 module "kafka-connect-plugin" {
@@ -85,9 +100,13 @@ module "kafka-connect-plugin" {
     gateway          = "kafka-connect-plugin-storage-gateway"
     gateway_instance = "kafka-connect-plugin-storage-gateway"
     iam_role         = "StorageGatewayBucketAccessRole"
-    security_group   = "kafka-plugin-storage-gateway-sg"
   }
 
-  subnet_id = module.vpc.subnet_ids.public_subnets[0]
-  vpc_id    = module.vpc.vpc_id
+  vpc = {
+    id                               = module.vpc.vpc_id
+    subnet_ids                       = module.vpc.subnet_ids.private_subnets
+    gateway_instance_subnet          = module.vpc.subnet_ids.private_subnets[0]
+    gateway_instance_security_groups = [module.security_group.sg_id.s3_storage_gateway]
+    gateway_endpoint_security_groups = [module.security_group.sg_id.storage_gateway_endpoint]
+  }
 }
