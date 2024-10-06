@@ -6,7 +6,7 @@ data "aws_subnet" "db_subnets" {
 resource "aws_rds_cluster" "aurora_mysql" {
   cluster_identifier              = var.name.db_cluster
   engine                          = "aurora-mysql"
-  engine_version                  = "3.05.2"
+  engine_version                  = "8.0.mysql_aurora.3.05.2"
   database_name                   = var.name.db
   manage_master_user_password     = true
   master_username                 = var.db_info.admin_username
@@ -14,6 +14,8 @@ resource "aws_rds_cluster" "aurora_mysql" {
   db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.use_outbox.name
   vpc_security_group_ids          = var.vpc.security_groups
   backup_retention_period         = 7
+  storage_encrypted               = true
+  skip_final_snapshot             = false
 }
 
 resource "aws_rds_cluster_instance" "writer" {

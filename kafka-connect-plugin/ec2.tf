@@ -1,5 +1,5 @@
 resource "aws_instance" "storage_gateway" {
-  ami           = "ami-0f54e3fa9a943bb68"
+  ami           = "ami-01fd5b5ea8a90f2d0"
   instance_type = var.storage_gateway.gateway_instance
   subnet_id     = var.vpc.gateway_instance_subnet
 
@@ -24,4 +24,23 @@ resource "aws_instance" "storage_gateway" {
   tags = {
     Name = "${var.name.gateway_instance}"
   }
+}
+
+resource "tls_private_key" "storage_gateway" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
+
+resource "aws_key_pair" "storage_gateway" {
+  key_name   = "my-key-pair"
+  public_key = tls_private_key.storage_gateway.public_key_openssh
+}
+
+output "private_key_pem" {
+  value     = tls_private_key.storage_gateway.private_key_pem
+  sensitive = true
+}
+
+output "public_key_openssh" {
+  value = tls_private_key.storage_gateway.public_key_openssh
 }

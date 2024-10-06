@@ -4,4 +4,8 @@ resource "aws_vpc_endpoint" "storage_gateway" {
   vpc_endpoint_type  = "Interface"
   subnet_ids         = var.vpc.subnet_ids
   security_group_ids = var.vpc.gateway_endpoint_security_groups
+
+  tags = {
+    Name = "storage-gateway-endpoint"
+  }
 }

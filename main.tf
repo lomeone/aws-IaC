@@ -68,7 +68,7 @@ module "rds" {
 
   name = {
     db_cluster = "hansu-aurora-rds"
-    db         = "hansu-db"
+    db         = "hansu"
   }
 
   vpc = {
@@ -104,8 +104,8 @@ module "kafka-connect-plugin" {
 
   vpc = {
     id                               = module.vpc.vpc_id
-    subnet_ids                       = module.vpc.subnet_ids.private_subnets
-    gateway_instance_subnet          = module.vpc.subnet_ids.private_subnets[0]
+    subnet_ids                       = module.vpc.subnet_ids.public_subnets
+    gateway_instance_subnet          = module.vpc.subnet_ids.public_subnets[0]
     gateway_instance_security_groups = [module.security_group.sg_id.s3_storage_gateway]
     gateway_endpoint_security_groups = [module.security_group.sg_id.storage_gateway_endpoint]
   }
