@@ -86,3 +86,9 @@ resource "aws_vpc_security_group_ingress_rule" "allow_sgw_activation" {
   to_port           = 80
   ip_protocol       = "tcp"
 }
+
+resource "aws_vpc_security_group_egress_rule" "allow_anywhere_s3_gw" {
+  security_group_id = aws_security_group.s3_stroage_gateway.id
+  cidr_ipv4         = "0.0.0.0/0"
+  ip_protocol       = "-1"
+}

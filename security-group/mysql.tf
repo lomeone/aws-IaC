@@ -15,3 +15,9 @@ resource "aws_vpc_security_group_ingress_rule" "allow_mysql" {
   to_port           = 3306
   ip_protocol       = "tcp"
 }
+
+resource "aws_vpc_security_group_egress_rule" "allow_anywhere_mysql" {
+  security_group_id = aws_security_group.mysql.id
+  cidr_ipv4         = "0.0.0.0/0"
+  ip_protocol       = "-1"
+}

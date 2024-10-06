@@ -23,3 +23,9 @@ resource "aws_vpc_security_group_ingress_rule" "allow_msk_tls" {
   to_port           = 9094
   ip_protocol       = "tcp"
 }
+
+resource "aws_vpc_security_group_egress_rule" "allow_anywhere_msk_broker" {
+  security_group_id = aws_security_group.msk_broker.id
+  cidr_ipv4         = "0.0.0.0/0"
+  ip_protocol       = "-1"
+}

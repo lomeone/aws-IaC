@@ -38,3 +38,9 @@ resource "aws_vpc_security_group_ingress_rule" "allow_storage_gateway_metric" {
   to_port           = 2222
   ip_protocol       = "tcp"
 }
+
+resource "aws_vpc_security_group_egress_rule" "allow_anywhere_s3_gw_endpoint" {
+  security_group_id = aws_security_group.storage_gateway_endpoint.id
+  cidr_ipv4         = "0.0.0.0/0"
+  ip_protocol       = "-1"
+}
