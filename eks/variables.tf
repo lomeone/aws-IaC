@@ -9,6 +9,15 @@ variable "name" {
 }
 
 variable "subnet_ids" {
-  type        = list(string)
+  type = object({
+    control_plane = list(string)
+    node          = list(string)
+  })
   description = "subnet ids"
+}
+
+variable "region" {
+  type        = string
+  default     = "ap-northeast-2"
+  description = "service region"
 }
