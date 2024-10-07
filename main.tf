@@ -4,6 +4,11 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 4.16"
     }
+
+    helm = {
+      source  = "hashicorp/helm"
+      version = "~> 2.10.1"
+    }
   }
 
   required_version = ">= 1.9.2"
@@ -60,7 +65,10 @@ module "eks" {
     eks = "hansu-eks"
   }
 
-  subnet_ids = module.vpc.subnet_ids.eks_control_plane
+  subnet_ids = {
+    control_plane = module.vpc.subnet_ids.eks_control_plane
+    node          = module.vpc.subnet_ids.private_subnets
+  }
 }
 
 module "rds" {
@@ -108,5 +116,16 @@ module "kafka-connect-plugin" {
     gateway_instance_subnet          = module.vpc.subnet_ids.public_subnets[0]
     gateway_instance_security_groups = [module.security_group.sg_id.s3_storage_gateway]
     gateway_endpoint_security_groups = [module.security_group.sg_id.storage_gateway_endpoint]
+  }
+}
+
+module "iam" {
+  source = "./msa-iam"
+
+  eks = {
+    name     = module.eks.eks_info.name
+    arn      = module.eks.eks_info.arn
+    oidc_arn = module.eks.eks_info.oidc_arn
+    oidc_url = module.eks.eks_info.oidc_url
   }
 }
