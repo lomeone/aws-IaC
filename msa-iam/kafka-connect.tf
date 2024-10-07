@@ -14,7 +14,7 @@ data "aws_iam_policy_document" "eks_oidc_kafka_connect_assume_role" {
     condition {
       test     = "StringEquals"
       variable = "${replace(var.eks.oidc_url, "https://", "")}:sub"
-      values   = ["system:serviceaccount:kafka:kafka-connect"]
+      values   = ["system:serviceaccount:kafka-system:kafka-connect"]
     }
 
     condition {
