@@ -19,8 +19,8 @@ resource "aws_vpc_security_group_ingress_rule" "allow_msk_plaintext" {
 resource "aws_vpc_security_group_ingress_rule" "allow_msk_tls" {
   security_group_id = aws_security_group.msk_broker.id
   cidr_ipv4         = "0.0.0.0/0"
-  from_port         = 9094
-  to_port           = 9094
+  from_port         = 9098
+  to_port           = 9098
   ip_protocol       = "tcp"
 }
 
