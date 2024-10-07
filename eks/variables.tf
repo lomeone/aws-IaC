@@ -21,3 +21,18 @@ variable "region" {
   default     = "ap-northeast-2"
   description = "service region"
 }
+
+variable "node_group" {
+  type = object({
+    node_instance_type = list(string)
+    min_size           = number
+    max_size           = number
+    desired_size       = number
+  })
+  default = {
+    node_instance_type = ["m6g.xlarge"]
+    min_size           = 1
+    max_size           = 3
+    desired_size       = 1
+  }
+}

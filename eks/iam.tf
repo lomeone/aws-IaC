@@ -1,5 +1,5 @@
 resource "aws_iam_role" "eks" {
-  name               = "AmazonEKSNodeRole-terraform"
+  name               = "AmazonEKSClusterRole-terraform"
   assume_role_policy = data.aws_iam_policy_document.eks_role.json
 }
 
@@ -32,12 +32,12 @@ resource "aws_iam_openid_connect_provider" "eks_oidc" {
   url             = data.tls_certificate.eks_tls.url
 }
 
-resource "aws_iam_role" "karpenter" {
-  name               = "KarpenterNodeRole-${aws_eks_cluster.main.name}"
-  assume_role_policy = data.aws_iam_policy_document.karpenter_role.json
+resource "aws_iam_role" "node_group" {
+  name               = "AmazonEKSNodeRole-terraform"
+  assume_role_policy = data.aws_iam_policy_document.node_group_role.json
 }
 
-data "aws_iam_policy_document" "karpenter_role" {
+data "aws_iam_policy_document" "node_group_role" {
   version = "2012-10-17"
 
   statement {
@@ -50,6 +50,26 @@ data "aws_iam_policy_document" "karpenter_role" {
 
     actions = ["sts:AssumeRole"]
   }
+}
+
+resource "aws_iam_role_policy_attachment" "node_group_AmazonEKSWorkerNodePolicy" {
+  role       = aws_iam_role.node_group.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+}
+
+resource "aws_iam_role_policy_attachment" "node_group_AmazonEKS_CNI_Policy" {
+  role       = aws_iam_role.node_group.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
+}
+
+resource "aws_iam_role_policy_attachment" "node_group_AmazonEC2ContainerRegistryReadOnly" {
+  role       = aws_iam_role.node_group.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+}
+
+resource "aws_iam_role" "karpenter" {
+  name               = "KarpenterNodeRole-${aws_eks_cluster.main.name}"
+  assume_role_policy = data.aws_iam_policy_document.node_group_role.json
 }
 
 resource "aws_iam_role_policy_attachment" "karpenter_AmazonEKSWorkerNodePolicy" {
@@ -66,7 +86,6 @@ resource "aws_iam_role_policy_attachment" "karpenter_AmazonEC2ContainerRegistryR
   role       = aws_iam_role.karpenter.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
 }
-
 
 resource "aws_iam_role_policy_attachment" "karpenter_AmazonSSMManagedInstanceCore" {
   role       = aws_iam_role.karpenter.name

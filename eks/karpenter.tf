@@ -6,10 +6,18 @@ provider "helm" {
   }
 }
 
+# resource "aws_ec2_tag" "tag_existing_subnets" {
+#   for_each = toset(var.subnet_ids.node)
+
+#   resource_id = each.key
+
+#   key   = "karpenter.sh/discovery"
+#   value = aws_eks_cluster.main.name
+# }
+
 # resource "helm_release" "karpenter" {
-#   provider         = helm.cluster
 #   create_namespace = true
-#   namepsace        = "kube-system"
+#   namespace        = "kube-system"
 #   name             = "karpenter"
 #   repository       = "oci://public.ecr.aws/karpenter"
 #   chart            = "karpenter"
@@ -32,32 +40,46 @@ provider "helm" {
 #           memory: 1Gi
 #         limits:
 #           memory: 1Gi
-
 #     EOF
 #   ]
 # }
 
-# resource "kubernetes_manifest" "karpenter_provisioner" {
+# resource "kubernetes_manifest" "karpenter_nodepool" {
 #   manifest = {
-#     apiVersion = "karpenter.k8s.aws/v1"
-#     kind       = "Provisioner"
+#     apiVersion = "karpenter.sh/v1"
+#     kind       = "NodePool"
 #     metadata = {
 #       name = "default"
 #     }
 #     spec = {
-#       limits = {
-#         resources = {
-#           cpu    = "1000"
-#           memory = "1000Gi"
+#       template = {
+#         spec = {
+#           nodeClassRef = {
+#             group = "karpenter.k8s.aws"
+#             kind  = "EC2NodeClass"
+#             name  = "default"
+#           }
 #         }
 #       }
-#       requirements = [
-#         {
-#           key      = "node.kubernetes.io/instance-type"
-#           operator = "In"
-#           values   = ["t4g.large", "m7g.large", "m7g.xlarge"]
+#     }
+#   }
+# }
+
+# resource "kubernetes_manifest" "karpenter_node_class" {
+#   manifest = {
+#     apiVersion = "karpenter.k8s.aws/v1"
+#     kind       = "EC2NodeClass"
+#     metadata = {
+#       name = "default"
+#     }
+#     spec = {
+#       subnetSelectorTerms = {
+#         tags = {
+#           "karpenter.sh/discovery" = "${aws_eks_cluster.main.name}"
 #         }
-#       ]
+#       }
+#       role = "${aws_iam_role.karpenter}"
+#       amiFamily : "AL2023"
 #     }
 #   }
 # }
