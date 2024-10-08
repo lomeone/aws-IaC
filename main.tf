@@ -100,13 +100,13 @@ module "msk" {
   }
 }
 
-module "kafka-connect-plugin" {
-  source = "./kafka-connect-plugin"
+module "kafka_system_storage_gateway" {
+  source = "./kafka-system-storage-gateway"
 
   name = {
-    s3               = "kafka-connect-plugin-storage"
-    gateway          = "kafka-connect-plugin-storage-gateway"
-    gateway_instance = "kafka-connect-plugin-storage-gateway"
+    s3               = "kafka-system-storage"
+    gateway          = "kafka-system-storage-gateway"
+    gateway_instance = "kafka-system-storage-gateway"
     iam_role         = "StorageGatewayBucketAccessRole"
   }
 
