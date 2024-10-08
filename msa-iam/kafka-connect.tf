@@ -45,15 +45,47 @@ data "aws_iam_policy_document" "kafka_cluster_allow_policy" {
 
   statement {
     actions = [
-      "kafka-cluster:AlterTopicDynamicConfiguration",
-      "kafka-cluster:CreateTopic",
-      "kafka-cluster:ReadData",
+      "kafka:ListNodes",
+      "kafka:DescribeCluster"
+    ]
+
+    effect = "Allow"
+
+    resources = ["arn:aws:kafka:ap-northeast-2:058264332540:cluster/hansu-msk/*"]
+  }
+
+  statement {
+    actions = [
       "kafka-cluster:Connect",
+      "kafka-cluster:AlterCluster",
+      "kafka-cluster:DescribeCluster"
+    ]
+
+    effect = "Allow"
+
+    resources = ["arn:aws:kafka:ap-northeast-2:058264332540:cluster/hansu-msk/*"]
+  }
+
+  statement {
+    actions = [
+      "kafka-cluster:*Topic*",
+      "kafka-cluster:ReadData",
       "kafka-cluster:WriteData"
     ]
 
     effect = "Allow"
 
-    resources = ["arn:aws:kafka:ap-northeast-2:058264332540:cluster/hansu-msk/8f1dc94f-4256-4d7d-b211-2bf292b0e4cd-2"]
+    resources = ["arn:aws:kafka:ap-northeast-2:058264332540:topic/hansu-msk/*"]
+  }
+
+  statement {
+    actions = [
+      "kafka-cluster:AlterGroup",
+      "kafka-cluster:DescribeGroup"
+    ]
+
+    effect = "Allow"
+
+    resources = ["arn:aws:kafka:ap-northeast-2:058264332540:group/hansu-msk/*"]
   }
 }
