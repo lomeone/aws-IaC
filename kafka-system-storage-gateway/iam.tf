@@ -25,7 +25,7 @@ data "aws_iam_policy_document" "storagegateway_bucket_policy" {
       "s3:ListBucketVersions",
       "s3:ListBucketMultipartUploads"
     ]
-    resources = [aws_s3_bucket.kafka_connect_plugin.arn]
+    resources = [aws_s3_bucket.kafka_system.arn]
   }
 
   statement {
@@ -41,7 +41,7 @@ data "aws_iam_policy_document" "storagegateway_bucket_policy" {
       "s3:PutObject",
       "s3:PutObjectAcl"
     ]
-    resources = ["${aws_s3_bucket.kafka_connect_plugin.arn}/*"]
+    resources = ["${aws_s3_bucket.kafka_system.arn}/*"]
   }
 }
 
