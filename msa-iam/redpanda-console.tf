@@ -1,7 +1,7 @@
 
 resource "aws_iam_role" "redpanda" {
   name               = "RedpandaRole-${var.eks.name}"
-  assume_role_policy = data.aws_iam_policy_document.eks_oidc_kafka_connect_assume_role.json
+  assume_role_policy = data.aws_iam_policy_document.eks_oidc_redpanda_assume_role.json
 }
 
 data "aws_iam_policy_document" "eks_oidc_redpanda_assume_role" {
@@ -32,16 +32,26 @@ data "aws_iam_policy_document" "eks_oidc_redpanda_assume_role" {
 
 resource "aws_iam_role_policy_attachment" "redpanda_KafkaClusterAllowRedpandaPolicy" {
   role       = aws_iam_role.redpanda.name
-  policy_arn = aws_iam_policy.kafka_cluster_allow.arn
+  policy_arn = aws_iam_policy.kafka_cluster_allow_redpanda.arn
 }
 
 resource "aws_iam_policy" "kafka_cluster_allow_redpanda" {
   name   = "KafkaClusterAllowRedpandaPolicy"
-  policy = data.aws_iam_policy_document.kafka_cluster_allow_policy.json
+  policy = data.aws_iam_policy_document.kafka_cluster_allow_redpanda_policy.json
 }
 
 data "aws_iam_policy_document" "kafka_cluster_allow_redpanda_policy" {
   version = "2012-10-17"
+
+  statement {
+    actions = ["kafka:*"]
+
+    effect = "Allow"
+
+    resources = [
+      "arn:aws:kafka:ap-northeast-2:058264332540:cluster/hansu-msk/*",
+    ]
+  }
 
   statement {
     actions = ["kafka-cluster:*"]
@@ -49,10 +59,10 @@ data "aws_iam_policy_document" "kafka_cluster_allow_redpanda_policy" {
     effect = "Allow"
 
     resources = [
-      "arn:aws:kafka:ap-northeast-2:058264332540:cluster/hansu-msk/8f1dc94f-4256-4d7d-b211-2bf292b0e4cd-2",
-      "arn:aws:kafka:*:058264332540:group/*/*/*",
-      "arn:aws:kafka:*:058264332540:topic/*/*/*",
-      "arn:aws:kafka:*:058264332540:transactional-id/*/*/*"
+      "arn:aws:kafka:ap-northeast-2:058264332540:cluster/hansu-msk/*",
+      "arn:aws:kafka:ap-northeast-2:058264332540:group/hansu-msk/*",
+      "arn:aws:kafka:ap-northeast-2:058264332540:topic/hansu-msk/*",
+      "arn:aws:kafka:ap-northeast-2:058264332540:transactional-id/hansu-msk/*"
     ]
   }
 }

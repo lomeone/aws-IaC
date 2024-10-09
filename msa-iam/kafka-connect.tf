@@ -43,49 +43,72 @@ resource "aws_iam_policy" "kafka_cluster_allow" {
 data "aws_iam_policy_document" "kafka_cluster_allow_policy" {
   version = "2012-10-17"
 
+  # statement {
+  #   actions = [
+  #     "kafka:ListNodes",
+  #     "kafka:DescribeCluster"
+  #   ]
+
+  #   effect = "Allow"
+
+  #   resources = ["arn:aws:kafka:ap-northeast-2:058264332540:cluster/hansu-msk/*"]
+  # }
+
+  # statement {
+  #   actions = [
+  #     "kafka-cluster:Connect",
+  #     "kafka-cluster:AlterCluster",
+  #     "kafka-cluster:DescribeCluster"
+  #   ]
+
+  #   effect = "Allow"
+
+  #   resources = ["arn:aws:kafka:ap-northeast-2:058264332540:cluster/hansu-msk/*"]
+  # }
+
+  # statement {
+  #   actions = [
+  #     "kafka-cluster:*Topic*",
+  #     "kafka-cluster:ReadData",
+  #     "kafka-cluster:WriteData"
+  #   ]
+
+  #   effect = "Allow"
+
+  #   resources = ["arn:aws:kafka:ap-northeast-2:058264332540:topic/hansu-msk/*"]
+  # }
+
+  # statement {
+  #   actions = [
+  #     "kafka-cluster:AlterGroup",
+  #     "kafka-cluster:DescribeGroup"
+  #   ]
+
+  #   effect = "Allow"
+
+  #   resources = ["arn:aws:kafka:ap-northeast-2:058264332540:group/hansu-msk/*"]
+  # }
+
   statement {
-    actions = [
-      "kafka:ListNodes",
-      "kafka:DescribeCluster"
-    ]
+    actions = ["kafka:*"]
 
     effect = "Allow"
 
-    resources = ["arn:aws:kafka:ap-northeast-2:058264332540:cluster/hansu-msk/*"]
+    resources = [
+      "arn:aws:kafka:ap-northeast-2:058264332540:cluster/hansu-msk/*",
+    ]
   }
 
   statement {
-    actions = [
-      "kafka-cluster:Connect",
-      "kafka-cluster:AlterCluster",
-      "kafka-cluster:DescribeCluster"
-    ]
+    actions = ["kafka-cluster:*"]
 
     effect = "Allow"
 
-    resources = ["arn:aws:kafka:ap-northeast-2:058264332540:cluster/hansu-msk/*"]
-  }
-
-  statement {
-    actions = [
-      "kafka-cluster:*Topic*",
-      "kafka-cluster:ReadData",
-      "kafka-cluster:WriteData"
+    resources = [
+      "arn:aws:kafka:ap-northeast-2:058264332540:cluster/hansu-msk/*",
+      "arn:aws:kafka:ap-northeast-2:058264332540:group/hansu-msk/*",
+      "arn:aws:kafka:ap-northeast-2:058264332540:topic/hansu-msk/*",
+      "arn:aws:kafka:ap-northeast-2:058264332540:transactional-id/hansu-msk/*"
     ]
-
-    effect = "Allow"
-
-    resources = ["arn:aws:kafka:ap-northeast-2:058264332540:topic/hansu-msk/*"]
-  }
-
-  statement {
-    actions = [
-      "kafka-cluster:AlterGroup",
-      "kafka-cluster:DescribeGroup"
-    ]
-
-    effect = "Allow"
-
-    resources = ["arn:aws:kafka:ap-northeast-2:058264332540:group/hansu-msk/*"]
   }
 }
