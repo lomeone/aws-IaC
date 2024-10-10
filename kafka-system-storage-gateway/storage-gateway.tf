@@ -37,3 +37,15 @@ resource "aws_storagegateway_nfs_file_share" "redpanda" {
     cache_stale_timeout_in_seconds = 300
   }
 }
+
+resource "aws_storagegateway_nfs_file_share" "msk_auth" {
+  client_list     = var.storage_gateway.nfs_clients
+  gateway_arn     = aws_storagegateway_gateway.kafka_system.arn
+  location_arn    = "${aws_s3_bucket.kafka_system.arn}/msk-auth/"
+  role_arn        = aws_iam_role.storagegateway_bucket_access.arn
+  file_share_name = "kafka-system-msk-auth"
+
+  cache_attributes {
+    cache_stale_timeout_in_seconds = 300
+  }
+}
