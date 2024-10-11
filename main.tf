@@ -72,7 +72,7 @@ module "eks" {
 }
 
 module "rds" {
-  source = "./rds"
+  source = "./rds/aurora-mysql"
 
   name = {
     db_cluster = "hansu-aurora-rds"
