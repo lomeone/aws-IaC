@@ -21,4 +21,17 @@ resource "aws_msk_cluster" "main" {
 
     security_groups = var.vpc.security_groups
   }
+
+  logging_info {
+    broker_logs {
+      cloudwatch_logs {
+        enabled   = true
+        log_group = aws_cloudwatch_log_group.msk.name
+      }
+    }
+  }
+}
+
+resource "aws_cloudwatch_log_group" "msk" {
+  name = "msk_broker_logs"
 }
