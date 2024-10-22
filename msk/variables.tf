@@ -1,10 +1,6 @@
 variable "name" {
-  type = object({
-    msk = string
-  })
-  default = {
-    msk = "default-msk"
-  }
+  type        = string
+  default     = "default-msk"
   description = "msk resource name"
 }
 
