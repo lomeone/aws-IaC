@@ -20,3 +20,10 @@ output "subnet_groups" {
     db = aws_db_subnet_group.default.name
   }
 }
+
+output "route_table_ids" {
+  value = {
+    public  = aws_route_table.public[*].id
+    private = aws_route_table.private[*].id
+  }
+}
