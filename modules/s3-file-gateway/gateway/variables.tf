@@ -11,12 +11,13 @@ variable "vpc" {
     gateway_instance_subnet          = string
     gateway_instance_security_groups = list(string)
     gateway_endpoint_security_groups = list(string)
+    s3_endpoint_route_table_ids      = list(string)
   })
   description = "information abount vpc"
 }
 
 variable "instance_type" {
   type        = string
-  default     = "m5.xlarge"
+  default     = "r6g.large"
   description = "storage gateway instance type"
 }

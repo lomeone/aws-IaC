@@ -21,6 +21,8 @@ resource "aws_instance" "storage_gateway" {
     throughput  = 125
   }
 
+  key_name = aws_key_pair.storage_gateway.key_name
+
   tags = {
     Name = "${var.name}-storage-gateway-instance"
   }
@@ -32,6 +34,6 @@ resource "tls_private_key" "storage_gateway" {
 }
 
 resource "aws_key_pair" "storage_gateway" {
-  key_name   = "${var.name}-storage-gateway-key-pair"
+  key_name   = "${var.name}-storage-gateway-instance-key-pair"
   public_key = tls_private_key.storage_gateway.public_key_openssh
 }
