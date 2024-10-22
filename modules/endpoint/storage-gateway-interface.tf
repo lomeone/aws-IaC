@@ -15,7 +15,7 @@ resource "aws_security_group" "storage_gateway_endpoint" {
   name   = "${var.vpc.name}-storage-gw-endpoint-sg"
 
   tags = {
-    Name = "storage-gw-endpoint-sg"
+    Name = "${var.vpc.name}-storage-gw-endpoint-sg"
   }
 }
 

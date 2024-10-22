@@ -18,4 +18,3 @@ variable "route_table_ids" {
     private = list(string)
   })
 }
-
