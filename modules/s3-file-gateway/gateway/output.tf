@@ -1,6 +1,6 @@
 output "storage_gateway" {
   value = {
-    gateway_arn = aws_storagegateway.main.arn
+    gateway_arn = aws_storagegateway_gateway.this.arn
   }
 }
 
