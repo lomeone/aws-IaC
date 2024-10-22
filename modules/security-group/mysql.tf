@@ -10,7 +10,7 @@ resource "aws_security_group" "mysql" {
 
 resource "aws_vpc_security_group_ingress_rule" "allow_mysql" {
   security_group_id = aws_security_group.mysql.id
-  cidr_ipv4         = "0.0.0.0/0"
+  cidr_ipv4         = data.aws_vpc.this.cidr_block
   from_port         = 3306
   to_port           = 3306
   ip_protocol       = "tcp"
