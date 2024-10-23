@@ -6,7 +6,7 @@ resource "aws_vpc_endpoint" "storage_gateway_interface" {
   security_group_ids = [aws_security_group.storage_gateway_endpoint.id]
 
   tags = {
-    Name = "${var.name.vpc}-storage-gateway-endpoint-interface"
+    Name = "${var.vpc.name}-storage-gateway-endpoint-interface"
   }
 }
 

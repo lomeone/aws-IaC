@@ -5,6 +5,6 @@ resource "aws_vpc_endpoint" "s3_gateway" {
   route_table_ids   = concat(var.route_table_ids.public, var.route_table_ids.private)
 
   tags = {
-    Name = "${var.name.vpc}-s3-endpoint-gateway"
+    Name = "${var.vpc.name}-s3-endpoint-gateway"
   }
 }
