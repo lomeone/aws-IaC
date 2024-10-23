@@ -18,6 +18,6 @@ variable "vpc" {
 
 variable "instance_type" {
   type        = string
-  default     = "r6g.large"
+  default     = "t3.xlarge"
   description = "storage gateway instance type"
 }
