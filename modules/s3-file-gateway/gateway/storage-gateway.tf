@@ -5,7 +5,7 @@ resource "aws_storagegateway_gateway" "this" {
   gateway_ip_address   = aws_instance.storage_gateway.public_ip
   gateway_vpc_endpoint = data.aws_vpc_endpoint.storage_gateway_interface.dns_entry[0].dns_name
 
-  depends_on = [aws_vpc_endpoint.s3_gateway]
+  depends_on = [data.aws_vpc_endpoint.s3_gateway]
 }
 
 data "aws_storagegateway_local_disk" "this" {
