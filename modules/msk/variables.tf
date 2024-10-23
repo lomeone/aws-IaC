@@ -20,10 +20,10 @@ variable "kafka" {
     volume_size     = number
   })
   default = {
-    version         = "3.5.1"
+    version         = "3.6.0"
     broker_count    = 3
-    broker_instance = "kafka.m7g.large"
-    volume_size     = 1000
+    broker_instance = "kafka.t3.small"
+    volume_size     = 1
   }
   description = "kafka info"
 }
