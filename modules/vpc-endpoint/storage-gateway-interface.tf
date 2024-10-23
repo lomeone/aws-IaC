@@ -19,14 +19,6 @@ resource "aws_security_group" "storage_gateway_endpoint" {
   }
 }
 
-resource "aws_vpc_security_group_ingress_rule" "allow_http" {
-  security_group_id = aws_security_group.storage_gateway_endpoint.id
-  cidr_ipv4         = data.aws_vpc.this.cidr_block
-  from_port         = 80
-  to_port           = 80
-  ip_protocol       = "tcp"
-}
-
 resource "aws_vpc_security_group_ingress_rule" "allow_https" {
   security_group_id = aws_security_group.storage_gateway_endpoint.id
   cidr_ipv4         = data.aws_vpc.this.cidr_block
