@@ -41,3 +41,14 @@ resource "aws_eks_node_group" "default_node_group" {
 
   instance_types = var.node_group.node_instance_type
 }
+
+resource "null_resource" "add_karpenter_tag" {
+  count = length(var.subnet_ids.node)
+
+  provisioner "local-exec" {
+    command = <<EOT
+      aws ec2 create-tags --resources ${var.subnet_ids.node[count.index]} --tags Key=karperter.sh/discovery,Value=${aws_eks_cluster.main.name}
+      aws ec2 create-tags --resources ${aws_eks_cluster.main.vpc_config[0].cluster_security_group_id} --tags Key=karperter.sh/discovery,Value=${aws_eks_cluster.main.name}
+    EOT
+  }
+}

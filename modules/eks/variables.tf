@@ -30,7 +30,7 @@ variable "node_group" {
     desired_size       = number
   })
   default = {
-    node_instance_type = ["m6g.xlarge"]
+    node_instance_type = ["t4g.medium"]
     min_size           = 1
     max_size           = 3
     desired_size       = 1
