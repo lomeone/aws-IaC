@@ -5,6 +5,8 @@ resource "aws_eks_cluster" "main" {
     subnet_ids = var.subnet_ids.control_plane
   }
 
+  version = "1.31"
+
   depends_on = [
     aws_iam_role_policy_attachment.eks_AmazonEKSClusterPolicy,
     aws_iam_role_policy_attachment.eks_AmazonEKSVPCResourceController
@@ -40,6 +42,26 @@ resource "aws_eks_node_group" "default_node_group" {
   ami_type = "AL2023_ARM_64_STANDARD"
 
   instance_types = var.node_group.node_instance_type
+}
+
+resource "aws_eks_addon" "vpc_cni" {
+  cluster_name = aws_eks_cluster.main.name
+  addon_name   = "vpc-cni"
+}
+
+resource "aws_eks_addon" "core_dns" {
+  cluster_name = aws_eks_cluster.main.name
+  addon_name   = "coredns"
+}
+
+resource "aws_eks_addon" "kube_proxy" {
+  cluster_name = aws_eks_cluster.main.name
+  addon_name   = "kube-proxy"
+}
+
+resource "aws_eks_addon" "pod_identity_webhook" {
+  cluster_name = aws_eks_cluster.main.name
+  addon_name   = "eks-pod-identity-agent"
 }
 
 resource "null_resource" "add_karpenter_tag" {
