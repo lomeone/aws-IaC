@@ -97,6 +97,11 @@ resource "aws_iam_role" "karpenter_controller" {
   assume_role_policy = data.aws_iam_policy_document.karpenter_controller_role.json
 }
 
+resource "aws_iam_role_policy_attachment" "karpenter_controller" {
+  role       = aws_iam_role.karpenter_controller.name
+  policy_arn = aws_iam_policy.karpenter_controller.arn
+}
+
 data "aws_iam_policy_document" "karpenter_controller_role" {
   version = "2012-10-17"
 
