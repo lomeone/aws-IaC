@@ -36,7 +36,7 @@ resource "aws_iam_role_policy_attachment" "kafka_connect_KafkaClusterAllowPolicy
 }
 
 resource "aws_iam_policy" "kafka_cluster_allow" {
-  name   = "KafkaClusterAllowPolicy"
+  name   = "KafkaClusterAllowPolicy-${var.eks.name}"
   policy = data.aws_iam_policy_document.kafka_cluster_allow_policy.json
 }
 
@@ -51,7 +51,7 @@ data "aws_iam_policy_document" "kafka_cluster_allow_policy" {
 
     effect = "Allow"
 
-    resources = ["arn:aws:kafka:ap-northeast-2:058264332540:cluster/lomeone-msk/*"]
+    resources = ["arn:aws:kafka:ap-northeast-2:058264332540:cluster/hansu-msk/*"]
   }
 
   statement {
@@ -63,7 +63,7 @@ data "aws_iam_policy_document" "kafka_cluster_allow_policy" {
 
     effect = "Allow"
 
-    resources = ["arn:aws:kafka:ap-northeast-2:058264332540:cluster/lomeone-msk/*"]
+    resources = ["arn:aws:kafka:ap-northeast-2:058264332540:cluster/hansu-msk/*"]
   }
 
   statement {
@@ -75,7 +75,7 @@ data "aws_iam_policy_document" "kafka_cluster_allow_policy" {
 
     effect = "Allow"
 
-    resources = ["arn:aws:kafka:ap-northeast-2:058264332540:topic/lomeone-msk/*"]
+    resources = ["arn:aws:kafka:ap-northeast-2:058264332540:topic/hansu-msk/*"]
   }
 
   statement {
@@ -86,6 +86,6 @@ data "aws_iam_policy_document" "kafka_cluster_allow_policy" {
 
     effect = "Allow"
 
-    resources = ["arn:aws:kafka:ap-northeast-2:058264332540:group/lomeone-msk/*"]
+    resources = ["arn:aws:kafka:ap-northeast-2:058264332540:group/hansu-msk/*"]
   }
 }
