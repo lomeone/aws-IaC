@@ -10,7 +10,6 @@ variable "vpc" {
     subnet_ids                       = list(string)
     gateway_instance_subnet          = string
     gateway_instance_security_groups = list(string)
-    gateway_endpoint_security_groups = list(string)
     s3_endpoint_route_table_ids      = list(string)
   })
   description = "information abount vpc"

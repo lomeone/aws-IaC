@@ -39,8 +39,7 @@ module "kafka_system_s3_gateway" {
     subnet_ids                       = module.vpc.subnet_ids.private_subnets
     gateway_instance_subnet          = module.vpc.subnet_ids.public_subnets[0]
     gateway_instance_security_groups = [module.security_group.sg_id.s3_storage_gateway]
-    gateway_endpoint_security_groups = [module.security_group.sg_id.storage_gateway_endpoint]
-    s3_endpoint_route_table_ids      = concat(module.route_table.route_table_ids.public, module.route_table.route_table_ids.private)
+    s3_endpoint_route_table_ids      = concat(module.vpc.route_table_ids.public, module.vpc.route_table_ids.private)
   }
 }
 

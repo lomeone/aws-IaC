@@ -23,7 +23,7 @@ resource "aws_iam_role_policy_attachment" "s3_bucket_access_S3AllowAceess" {
 }
 
 resource "aws_iam_policy" "s3_bucket_access_allow" {
-  name   = "${var.name.iam_role}-policy"
+  name   = "${aws_iam_role.s3_bucket_access.name}-policy"
   policy = data.aws_iam_policy_document.storagegateway_bucket_policy.json
 }
 

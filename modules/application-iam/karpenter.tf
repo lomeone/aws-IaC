@@ -42,7 +42,7 @@ resource "aws_iam_role_policy_attachment" "karpenter_node_AmazonSSMManagedInstan
 resource "aws_iam_role" "karpenter_controller" {
   name = "KarpenterControllerRole-${var.eks.name}"
 
-  assume_role_policy = data.aws_iam_policy_document.karpenter_controller_assume_role.json
+  assume_role_policy = data.aws_iam_policy_document.eks_oidc_karpenter_controller_assume_role.json
 }
 
 data "aws_iam_policy_document" "eks_oidc_karpenter_controller_assume_role" {
@@ -141,7 +141,7 @@ data "aws_iam_policy_document" "karpenter_controller_policy" {
 
     effect = "Allow"
 
-    resources = [var.eks.cluster_arn]
+    resources = [var.eks.arn]
 
     sid = "EKSClusterEndpointLookup"
   }
