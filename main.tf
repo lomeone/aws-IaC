@@ -2,16 +2,11 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 5.61"
-    }
-
-    helm = {
-      source  = "hashicorp/helm"
-      version = "~> 2.14.0"
+      version = "~> 5.72.0"
     }
   }
 
-  required_version = ">= 1.9.2"
+  required_version = ">= 1.9.5"
 }
 
 provider "aws" {
@@ -25,7 +20,7 @@ provider "aws" {
 }
 
 module "vpc" {
-  source = "./vpc"
+  source = "./modules/vpc"
   name = {
     vpc                           = "hansu-vpc"
     public_subnet                 = "public"
@@ -50,7 +45,7 @@ module "vpc" {
 }
 
 module "security_group" {
-  source = "./security-group"
+  source = "./modules/security-group"
 
   vpc = {
     id   = module.vpc.vpc_id
@@ -59,7 +54,7 @@ module "security_group" {
 }
 
 module "eks" {
-  source = "./eks"
+  source = "./modules/eks"
 
   name = {
     eks = "hansu-eks"
@@ -71,61 +66,21 @@ module "eks" {
   }
 }
 
-module "rds" {
-  source = "./rds/aurora-mysql"
-
-  name = {
-    db_cluster = "hansu-aurora-rds"
-    db         = "hansu"
-  }
+module "endpoint" {
+  source = "./modules/endpoint"
 
   vpc = {
-    db_subnet_ids   = module.vpc.subnet_ids.db_private_subnets
-    db_subnet_group = module.vpc.subnet_groups.db
-    security_groups = [module.security_group.sg_id.mysql]
-  }
-}
-
-module "msk" {
-  source = "./msk"
-
-  name = {
-    msk            = "hansu-msk"
-    security_group = "hansu-msk-sg"
+    id   = module.vpc.vpc_id
+    name = module.vpc.vpc_name
   }
 
-  vpc = {
-    security_groups = [module.security_group.sg_id.msk]
-    subnet_ids      = module.vpc.subnet_ids.private_subnets
-  }
-}
-
-module "kafka_system_storage_gateway" {
-  source = "./kafka-system-storage-gateway"
-
-  name = {
-    s3               = "kafka-system-storage"
-    gateway          = "kafka-system-storage-gateway"
-    gateway_instance = "kafka-system-storage-gateway"
-    iam_role         = "StorageGatewayBucketAccessRole"
+  subnet_ids = {
+    public  = module.vpc.subnet_ids.public_subnets
+    private = module.vpc.subnet_ids.private_subnets
   }
 
-  vpc = {
-    id                               = module.vpc.vpc_id
-    subnet_ids                       = module.vpc.subnet_ids.public_subnets
-    gateway_instance_subnet          = module.vpc.subnet_ids.public_subnets[0]
-    gateway_instance_security_groups = [module.security_group.sg_id.s3_storage_gateway]
-    gateway_endpoint_security_groups = [module.security_group.sg_id.storage_gateway_endpoint]
-  }
-}
-
-module "iam" {
-  source = "./msa-iam"
-
-  eks = {
-    name     = module.eks.eks_info.name
-    arn      = module.eks.eks_info.arn
-    oidc_arn = module.eks.eks_info.oidc_arn
-    oidc_url = module.eks.eks_info.oidc_url
+  route_table_ids = {
+    public  = module.vpc.route_table_ids.public
+    private = module.vpc.route_table_ids.private
   }
 }
