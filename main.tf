@@ -67,7 +67,7 @@ module "eks" {
 }
 
 module "endpoint" {
-  source = "./modules/endpoint"
+  source = "./modules/vpc-endpoint"
 
   vpc = {
     id   = module.vpc.vpc_id
