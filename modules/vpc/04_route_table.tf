@@ -19,11 +19,10 @@ resource "aws_route_table_association" "public" {
 
 resource "aws_route_table" "eks_control_plane" {
   vpc_id = aws_vpc.main.id
-  count  = length(var.subnet_cidr.public)
 
   route {
     cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = aws_nat_gateway.public_nat_gateway[count.index].id
+    nat_gateway_id = aws_nat_gateway.public_nat_gateway.id
   }
 
   tags = {
@@ -33,16 +32,15 @@ resource "aws_route_table" "eks_control_plane" {
 resource "aws_route_table_association" "eks_control_plane" {
   count          = length(aws_subnet.eks_control_plane)
   subnet_id      = aws_subnet.eks_control_plane[count.index].id
-  route_table_id = aws_route_table.eks_control_plane[count.index].id
+  route_table_id = aws_route_table.eks_control_plane.id
 }
 
 resource "aws_route_table" "private" {
   vpc_id = aws_vpc.main.id
-  count  = length(var.subnet_cidr.public)
 
   route {
     cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = aws_nat_gateway.public_nat_gateway[count.index].id
+    nat_gateway_id = aws_nat_gateway.public_nat_gateway.id
   }
 
   tags = {
@@ -53,7 +51,7 @@ resource "aws_route_table" "private" {
 resource "aws_route_table_association" "private" {
   count          = length(aws_subnet.private)
   subnet_id      = aws_subnet.private[count.index].id
-  route_table_id = aws_route_table.private[count.index].id
+  route_table_id = aws_route_table.private.id
 }
 
 resource "aws_route_table" "db_private" {
