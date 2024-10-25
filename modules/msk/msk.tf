@@ -22,6 +22,18 @@ resource "aws_msk_cluster" "main" {
     security_groups = var.vpc.security_groups
   }
 
+  open_monitoring {
+    prometheus {
+      jmx_exporter {
+        enabled_in_broker = true
+      }
+
+      node_exporter {
+        enabled_in_broker = true
+      }
+    }
+  }
+
   configuration_info {
     arn      = aws_msk_configuration.main.arn
     revision = 1
