@@ -11,6 +11,7 @@ variable "name" {
     db_route_table                = string
     internet_gateway              = string
     public_nat_gateway            = string
+    eks                           = string
   })
   default = {
     vpc                           = "default"
@@ -24,6 +25,7 @@ variable "name" {
     db_route_table                = "db-rtb"
     internet_gateway              = "igw"
     public_nat_gateway            = "nat-public-gw"
+    eks                           = "default"
   }
   description = "resource names"
 }

@@ -42,6 +42,7 @@ resource "aws_subnet" "private" {
 
   tags = {
     "kubernetes.io/role/interna-elb" = 1
+    "karpenter.sh/discovery"         = var.name.eks
     Name                             = "${var.name.vpc}-${var.name.private_subnet}-${format("%02s", count.index)}-${local.az[count.index % var.availability_zone_count]}"
   }
 }
