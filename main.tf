@@ -33,6 +33,7 @@ module "vpc" {
     db_route_table                = "db-rtb"
     internet_gateway              = "igw"
     public_nat_gateway            = "nat-public-gw"
+    eks                           = "hansu-eks"
   }
   cidr                    = "10.0.0.0/16"
   availability_zone_count = 3
