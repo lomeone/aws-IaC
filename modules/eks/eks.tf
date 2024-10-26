@@ -7,6 +7,10 @@ resource "aws_eks_cluster" "main" {
 
   version = "1.31"
 
+  tags = {
+    "karpenter.sh/discovery" = "${var.name.eks}"
+  }
+
   depends_on = [
     aws_iam_role_policy_attachment.eks_AmazonEKSClusterPolicy,
     aws_iam_role_policy_attachment.eks_AmazonEKSVPCResourceController
@@ -49,7 +53,7 @@ resource "null_resource" "add_karpenter_tag" {
 
   provisioner "local-exec" {
     command = <<EOT
-      aws ec2 create-tags --resources ${aws_eks_cluster.main.vpc_config[0].cluster_security_group_id} --tags Key=karperter.sh/discovery,Value=${aws_eks_cluster.main.name}
+      aws ec2 create-tags --resources ${aws_eks_cluster.main.vpc_config[0].cluster_security_group_id} --tags Key=karpenter.sh/discovery,Value=${aws_eks_cluster.main.name}
     EOT
   }
 }

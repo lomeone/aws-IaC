@@ -290,4 +290,22 @@ data "aws_iam_policy_document" "karpenter_controller_policy" {
     resources = ["*"]
     sid       = "AllowInstanceProfileReadActions"
   }
+
+  // for Spot instance
+  statement {
+    actions = [
+      "sqs:ReceiveMessage",
+      "sqs:GetQueueUrl",
+      "sqs:DeleteMessage"
+    ]
+    effect = "Allow"
+
+    resources = ["*"]
+    sid       = "AllowInterruptionQueueActions"
+  }
+}
+
+
+resource "aws_iam_service_linked_role" "spot" {
+  aws_service_name = "spot.amazonaws.com"
 }
