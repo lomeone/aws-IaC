@@ -44,16 +44,6 @@ data "aws_iam_policy_document" "kafka_cluster_allow_redpanda_policy" {
   version = "2012-10-17"
 
   statement {
-    actions = ["kafka:*"]
-
-    effect = "Allow"
-
-    resources = [
-      "arn:aws:kafka:ap-northeast-2:058264332540:cluster/hansu-msk/*",
-    ]
-  }
-
-  statement {
     actions = ["kafka-cluster:*"]
 
     effect = "Allow"

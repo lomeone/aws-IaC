@@ -45,17 +45,6 @@ data "aws_iam_policy_document" "kafka_cluster_allow_policy" {
 
   statement {
     actions = [
-      "kafka:ListNodes",
-      "kafka:DescribeCluster"
-    ]
-
-    effect = "Allow"
-
-    resources = ["arn:aws:kafka:ap-northeast-2:058264332540:cluster/hansu-msk/*"]
-  }
-
-  statement {
-    actions = [
       "kafka-cluster:Connect",
       "kafka-cluster:AlterCluster",
       "kafka-cluster:DescribeCluster"
