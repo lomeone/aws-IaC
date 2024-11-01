@@ -38,15 +38,6 @@ resource "aws_msk_cluster" "main" {
     arn      = aws_msk_configuration.main.arn
     revision = 1
   }
-
-  logging_info {
-    broker_logs {
-      cloudwatch_logs {
-        enabled   = true
-        log_group = aws_cloudwatch_log_group.msk.name
-      }
-    }
-  }
 }
 
 resource "aws_msk_configuration" "main" {
