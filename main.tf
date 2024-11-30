@@ -22,7 +22,7 @@ provider "aws" {
 module "vpc" {
   source = "./modules/vpc"
   name = {
-    vpc                           = "hansu-vpc"
+    vpc                           = "lomeone-vpc"
     public_subnet                 = "public"
     eks_control_plane_subnet      = "eks-private"
     private_subnet                = "private"
@@ -33,7 +33,7 @@ module "vpc" {
     db_route_table                = "db-rtb"
     internet_gateway              = "igw"
     public_nat_gateway            = "nat-public-gw"
-    eks                           = "hansu-eks"
+    eks                           = "lomeone-eks"
   }
   cidr                    = "10.0.0.0/16"
   availability_zone_count = 3
@@ -58,7 +58,7 @@ module "eks" {
   source = "./modules/eks"
 
   name = {
-    eks = "hansu-eks"
+    eks = "lomeone-eks"
   }
 
   subnet_ids = {
