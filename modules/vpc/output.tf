@@ -21,9 +21,9 @@ output "subnet_groups" {
   }
 }
 
-output "route_table_ids" {
+output "route_table_id" {
   value = {
-    public  = aws_route_table.public[*].id
-    private = aws_route_table.private[*].id
+    public  = aws_route_table.public.id
+    private = aws_route_table.private.id
   }
 }
