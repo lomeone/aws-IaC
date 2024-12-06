@@ -80,5 +80,5 @@ module "endpoint" {
     private = module.vpc.subnet_ids.private_subnets
   }
 
-  route_table_ids = concat(module.vpc.route_table_id.public, module.vpc.route_table_id.private)
+  route_table_ids = [module.vpc.route_table_id.public, module.vpc.route_table_id.private]
 }
