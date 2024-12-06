@@ -13,8 +13,5 @@ variable "subnet_ids" {
 }
 
 variable "route_table_ids" {
-  type = object({
-    public  = list(string)
-    private = list(string)
-  })
+  type = list(string)
 }
