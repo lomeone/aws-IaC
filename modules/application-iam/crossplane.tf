@@ -33,3 +33,8 @@ resource "aws_iam_role_policy_attachment" "crossplane_AmazonS3FullAccess" {
   role       = aws_iam_role.crossplane.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
 }
+
+resource "aws_iam_role_policy_attachment" "crossplane_AmazonIAMFullAccess" {
+  role       = aws_iam_role.crossplane.name
+  policy_arn = "arn:aws:iam::aws:policy/IAMFullAccess"
+}

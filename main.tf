@@ -22,7 +22,7 @@ provider "aws" {
 module "vpc" {
   source = "./modules/vpc"
   name = {
-    vpc                           = "hansu-vpc"
+    vpc                           = "lomeone-vpc"
     public_subnet                 = "public"
     eks_control_plane_subnet      = "eks-private"
     private_subnet                = "private"
@@ -33,15 +33,15 @@ module "vpc" {
     db_route_table                = "db-rtb"
     internet_gateway              = "igw"
     public_nat_gateway            = "nat-public-gw"
-    eks                           = "hansu-eks"
+    eks                           = "lomeone-eks"
   }
   cidr                    = "10.0.0.0/16"
   availability_zone_count = 3
   subnet_cidr = {
-    public            = ["10.0.0.0/27", "10.0.0.32/27", "10.0.0.64/27"]
+    public            = ["10.0.0.0/26", "10.0.0.64/26", "10.0.0.128/26"]
     eks_control_plane = ["10.0.0.192/28", "10.0.0.208/28", "10.0.0.224/28"]
-    private           = ["10.0.16.0/20", "10.0.32.0/20", "10.0.48.0/20"]
-    db_private        = ["10.0.244.0/22", "10.0.248.0/22", "10.0.252.0/22"]
+    db_private        = ["10.0.8.0/21", "10.0.16.0/21", "10.0.24.0/21"]
+    private           = ["10.0.64.0/18", "10.0.128.0/18", "10.0.192.0/18"]
   }
 }
 
@@ -58,7 +58,7 @@ module "eks" {
   source = "./modules/eks"
 
   name = {
-    eks = "hansu-eks"
+    eks = "lomeone-eks"
   }
 
   subnet_ids = {
@@ -80,8 +80,5 @@ module "endpoint" {
     private = module.vpc.subnet_ids.private_subnets
   }
 
-  route_table_ids = {
-    public  = module.vpc.route_table_ids.public
-    private = module.vpc.route_table_ids.private
-  }
+  route_table_ids = [module.vpc.route_table_id.public, module.vpc.route_table_id.private]
 }
